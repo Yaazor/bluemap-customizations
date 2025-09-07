@@ -1,0 +1,9 @@
+#map-container .bm-marker-player {
+    --scale: 1.1;
+    scale: var(--scale);
+}
+
+#map-container .bm-marker-player[distance-data="med"], #map-container .bm-marker-player[distance-data="far"] {
+    --scale: 1.9
+}
+
