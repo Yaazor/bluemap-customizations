@@ -9,18 +9,22 @@ export default class ServerMap {
     private buttonElement: Element;
     private iconElement: HTMLImageElement|null = null;
 
-    constructor(name: string, element: Element) {
+    constructor(id: string, name: string, element: Element) {
         this.name = name;
-        this.buttonElement = element;
-
-        this.id = this.buttonElement.getAttribute("title");
-        this.iconElement = this.buttonElement.querySelector('.world_icon');
+        this.id = id;
 
         Object.values(Dimension).forEach(dimension => {
             if(name.includes(dimension)) this.dimension = dimension;
         })
 
+        this.refreshDisplay(element);
+
         console.log(`Registering world ${this.id} (${this.dimension})`)
+    }
+
+    refreshDisplay(newElement: Element) {
+        this.buttonElement = newElement;
+        this.iconElement = this.buttonElement.querySelector('.world_icon');
 
         let skyIcon: Element = this.buttonElement.querySelector('.sky');
         if(skyIcon !== null) skyIcon.remove();
@@ -35,6 +39,7 @@ export default class ServerMap {
         let element: HTMLImageElement = document.createElement('img');
         this.iconElement = element;
         this.iconElement.classList.add('world_icon');
+        this.iconElement.src = "assets/world_icons/default.png";
         this.buttonElement.prepend(element);
     }
 

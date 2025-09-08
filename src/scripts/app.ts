@@ -1,6 +1,9 @@
 import '../styles/styles.scss';
+import Bluemap from './Bluemap';
 import ServerMap from './worlds/ServerMap';
+
 export let bluemap = (window as any).bluemap;
+export let mapImplementation = new Bluemap();
 
 loadDefaultMap("monde5_2");
 
@@ -31,9 +34,18 @@ function sortMaps(): void {
     buttons = new Map([...buttons].sort((a, b) => String(a[0]).localeCompare(String(b[0]))));
 
     const mapsWindow: Element = elementsList[0].parentElement;
-    buttons.forEach((el: Element, id: string) => {
+    buttons.forEach((el: Element, name: string) => {
         mapsWindow.appendChild(el);
-        new ServerMap(id, el)
+        let id = el.getAttribute("title");
+
+        if(mapImplementation.getWorld(id) !== null) {
+            let world = mapImplementation.getWorld(id);
+            world.refreshDisplay(el)
+            return;
+        }
+
+        mapImplementation.registerWorld(id, new ServerMap(id, name, el))
+
     });
 
 
