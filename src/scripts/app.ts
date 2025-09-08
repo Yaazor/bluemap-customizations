@@ -1,5 +1,6 @@
 import '../styles/styles.scss';
 import Bluemap from './Bluemap';
+import PlayerMarker from './markers/PlayerMarker';
 import ServerMap from './worlds/ServerMap';
 
 export let bluemap = (window as any).bluemap;
@@ -8,13 +9,35 @@ export let mapImplementation = new Bluemap();
 loadDefaultMap("monde5_2");
 
 document.body.addEventListener("click", () => {
-    setTimeout(() => {
-        if(document.querySelector(".map-button") !== null) {
-            sortMaps();
-        }
-    }, 10);
+    setTimeout(loadEvents, 10);
 })
 
+setTimeout(() => {
+    setInterval(() => {
+        mapImplementation.reloadPlayerMaps()  
+    }, 30000);
+}, 50)
+
+export function loadEvents(): void {
+    if(document.querySelector(".map-button") !== null) {
+        sortMaps();
+    }
+    if(document.querySelector(".marker-button") !== null) registerPlayerMarkers();
+}
+
+function registerPlayerMarkers(): void {
+    const playerButtons = document.querySelectorAll(".marker-item.marker-hidden");
+    console.log("Registering player markers")
+    playerButtons.forEach(element => {
+        let button = element.querySelector('.marker-button');
+        if(button && !button.hasAttribute("registered") && button.getAttribute("title").includes("bm-player-")) {
+            let uuid = button.getAttribute("title").replace("bm-player-", "")
+            button.setAttribute("registered", "true")
+            
+            new PlayerMarker(uuid, button);
+        }
+    })
+}
 
 function loadDefaultMap(defaultMap: string): void {
     if(defaultMap in bluemap.mapsMap) {

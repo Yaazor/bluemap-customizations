@@ -1,3 +1,4 @@
+import { bluemap } from "../app";
 import { Dimension, getDimensionIcon } from "./Dimension";
 
 export default class ServerMap {
@@ -59,4 +60,5 @@ export default class ServerMap {
             this.iconElement.src = this.icon;
         });
     }
+
 }
