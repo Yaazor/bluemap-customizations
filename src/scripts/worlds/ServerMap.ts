@@ -31,10 +31,6 @@ export default class ServerMap {
         }
     }
 
-    modifyElementIcon(): void {
-        this.iconElement.src = this.icon;
-    }
-
     createElementIcon(): void {
         let element: HTMLImageElement = document.createElement('img');
         this.iconElement = element;
@@ -51,11 +47,11 @@ export default class ServerMap {
         .then(response => {
             if(response.status !== 404) {
                 this.icon = expectedPath;
-                this.modifyElementIcon();
             }else{
                 this.icon = getDimensionIcon(this.dimension);
-                this.modifyElementIcon();
             }
+
+            this.iconElement.src = this.icon;
         });
     }
 }
